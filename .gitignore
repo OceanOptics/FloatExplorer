@@ -8,5 +8,6 @@ __pycache__/
 *.sublime-workspace
 .DS_Store
 
-# Static data
+# Static data/cfg
+float_explorer_conf.py
 static/data/*
