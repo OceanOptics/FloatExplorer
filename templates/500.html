@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Internal Server Error{% endblock %}
+{% block body %}
+<div class="container">
+  <div class="alert alert-danger" role="alert">
+  <strong>Oh snap!</strong> The server is either overloaded or you found an error in the application.<br />
+  <a href="{{ url_for('dashboard') }}">Go somewhere nice</a> -
+  <a href="mailto:nils.haentjens+fe@maine.edu">Contact us</a>
+  </div>
+<div class="container">
+{% endblock %}

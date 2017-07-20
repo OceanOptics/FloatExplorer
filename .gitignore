@@ -1,0 +1,12 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Subime-text
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
+# Static data
+static/data/*

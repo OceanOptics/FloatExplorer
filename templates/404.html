@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block title %}Page Not Found{% endblock %}
+{% block body %}
+<div class="container">
+  <div class="alert alert-danger" role="alert">
+  <strong>Oh snap!</strong> What you were looking for is just not there.<br />
+  <a href="{{ url_for('dashboard') }}">Go somewhere nice</a>
+  </div>
+<div class="container">
+{% endblock %}

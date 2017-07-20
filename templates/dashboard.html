@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block body %}
+  {% if not (session.logged_in) %}
+    <div class="container">
+      <div class="jumbotron">
+        <h1>BGC-Argo floats in the study area of NAAMES</h1>
+        <p class="lead">Floats listed below are deployed during <a href="https://naames.larc.nasa.gov">NAAMES</a> cruises or are part of the <a href="http://biogeochemical-argo.org">BGC Argo</a> program. They are located in the area of study of the <a href="https://naames.larc.nasa.gov">NAAMES</a> project. For publication, use data processed by the GDAC or contact us to properly cite the method used to process the data and acknowledge collaborators and founding. <br />
+        NOTE: UMaine Floats are not yet available on the GDAC.</p>
+      </div>
+    </div>
+  {% endif %}
+    <main class="container-fluid">
+      <h1>Dashboard</h1>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              {% if session.logged_in %}
+              <th>SID</th>
+              {% endif %}
+              <th>WMO</th>
+              <th>LID</th>
+              <th>PI</th>
+              <th>Host</th>
+              <th>Profile</th>
+              <th>Time since deployment</th>
+              <th>Time since last report</th>
+              <th colspan=2>Last known position</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for entry in entries %}
+            <tr>
+              {% if session.logged_in %}
+              <td>{{ entry.id }}</td>
+              {% endif %}
+              <td class='text-nowrap'>{{ entry.wmo }}</td>
+              <td class='text-nowrap'><a href="{{ url_for('float', lab_id=entry.lab_id) }}">{{ entry.lab_id }}</a></td>
+              <td class='text-nowrap'>{{ entry.pi|safe }}</td>
+              <td class='text-nowrap'>{{ entry.host|safe }}</td>
+              <td class='text-nowrap'>{{ entry.profile }}</td>
+              <td class='text-nowrap'>{{ entry.delta_deploy }} ({{ entry.dt_deploy }})</td>
+              <td class='text-nowrap'>{{ entry.delta_report|safe }} ({{ entry.dt_report }})</td>
+              <td class='text-nowrap'>{{ entry.lat_report|safe }}</td>
+              <td class='text-nowrap'>{{ entry.lon_report|safe }}</td>
+              <td class='text-nowrap'>{{ entry.status }}</td>
+            </tr>
+          {% else %}
+            <tr>
+              {% if session.logged_in %}
+              <td colspan=11>
+              {% else %}
+              <td colspan=10>
+              {% endif %}
+              <em>Oups ! The server can't find any float.</em></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </main>
+{% endblock %}
