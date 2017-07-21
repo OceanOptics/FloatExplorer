@@ -7,7 +7,7 @@
 //////////////////
 // Path to data //
 //////////////////
-var path2data = '/static/data/'
+// var path2data = '/static/data/'
 
 ////////////////////
 // Plotly Options //

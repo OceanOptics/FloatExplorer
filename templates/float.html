@@ -29,6 +29,7 @@
 {% endblock %}
 {% block js %}
 <!-- Plotly.js -->
+<script type='text/javascript'>var path2data = "{{ url_for('static', filename='data/') }}"</script>
 <script src="{{ url_for('static', filename='plotly.min.js') }}"></script>
 <!-- Load ProfileExplorer script -->
 <script src="{{ url_for('static', filename='profile-explorer.js') }}"></script>
