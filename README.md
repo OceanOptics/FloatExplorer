@@ -28,3 +28,13 @@ The default configuration file is default_conf.py
   + Map page
   + Documentation page
   + Link to data on FTP
+
+# BUGS
+  + APP crash when no DB
+  + if empty DB, float page crash
+      return redirect(url_for('float', lab_id=float_list[0]['lab_id']))
+        IndexError: list index out of range
+  + Bug on dashboard when date last profile != than 0
+    File "/home/nils/FloatExplorer/float_explorer.py", line 87, in dashboard
+[Thu Jul 20 18:17:04 2017] [error] [client 141.114.77.13]     h = int(foo.total_seconds()/3600)
+[Thu Jul 20 18:17:04 2017] [error] [client 141.114.77.13] AttributeError: 'datetime.timedelta' object has no attribute 'total_seconds'

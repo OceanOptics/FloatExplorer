@@ -22,7 +22,7 @@
               <th>WMO</th>
               <th>LID</th>
               <th>PI</th>
-              <th>Host</th>
+              <th>Project</th>
               <th>Profile</th>
               <th>Time since deployment</th>
               <th>Time since last report</th>
@@ -39,7 +39,7 @@
               <td class='text-nowrap'>{{ entry.wmo }}</td>
               <td class='text-nowrap'><a href="{{ url_for('float', lab_id=entry.lab_id) }}">{{ entry.lab_id }}</a></td>
               <td class='text-nowrap'>{{ entry.pi|safe }}</td>
-              <td class='text-nowrap'>{{ entry.host|safe }}</td>
+              <td class='text-nowrap'>{{ entry.project|safe }}</td>
               <td class='text-nowrap'>{{ entry.profile }}</td>
               <td class='text-nowrap'>{{ entry.delta_deploy }} ({{ entry.dt_deploy }})</td>
               <td class='text-nowrap'>{{ entry.delta_report|safe }} ({{ entry.dt_report }})</td>

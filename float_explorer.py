@@ -105,6 +105,9 @@ def dashboard():
                 entry['lon_report'] = '%.3f &deg;E'%entry['lon_report']
             else:
                 entry['lon_report'] = '%.3f &deg;W'%abs(entry['lon_report'])
+        # Render Profile id (Specific to PROVOR)
+        if 'PROVOR' in entry['model']:
+            entry['profile'] = entry['profile'] / 100
     return render_template('dashboard.html', entries=entries)
 
 
