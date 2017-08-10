@@ -22,6 +22,8 @@
       <!-- Plotly chart -->
       <div id="timeseries" style="min-width:800px; width: 100%; height: 540px;"></div>
       <div id="profiles" style="min-width:800px; width: 100%; height: 540px;"></div>
+      <!--- Map -->
+      <div id="map-canvas" style="min-width:800px; width: 100%; height: 600px; margin-bottom:20px"></div>
     </main>
 
   </div>
@@ -39,4 +41,10 @@
     setTimeSeriesPlot("{{ lab_id }}", setProfilesPlot);
   });
 </script>
+<!-- Loading Google Maps API -->
+<script type='text/javascript'>
+var path2geojson = '/static/data/{{ lab_id }}.geo.json'</script>
+<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBoztEvoNTCie1g87RFSuhgUmjL8QqTg0"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>
 {% endblock %}

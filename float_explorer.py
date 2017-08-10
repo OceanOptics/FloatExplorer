@@ -19,7 +19,7 @@ app.config.from_pyfile('float_explorer_conf.py')
 # Create database from command line
 # sqlite3 /tmp/float_explorer.db < schema.sql
 # Create database from app
-# run python & from patrick import init_db & init_db()
+# run python & from float_explorer import init_db & init_db()
 
 
 def init_db():
