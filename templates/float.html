@@ -43,7 +43,7 @@
 </script>
 <!-- Loading Google Maps API -->
 <script type='text/javascript'>
-var path2geojson = '/static/data/{{ lab_id }}.geo.json'</script>
+var path2geojson = path2data + '{{ lab_id }}.geo.json'</script>
 <script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBoztEvoNTCie1g87RFSuhgUmjL8QqTg0"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>
