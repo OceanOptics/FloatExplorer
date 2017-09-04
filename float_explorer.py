@@ -108,6 +108,9 @@ def dashboard():
         # Render Profile id (Specific to PROVOR)
         if 'PROVOR' in entry['model']:
             entry['profile'] = entry['profile'] / 100
+        # Render Missing WMO
+        if entry['wmo'] == -1:
+            entry['wmo'] = 'NA'
     return render_template('dashboard.html', entries=entries)
 
 
