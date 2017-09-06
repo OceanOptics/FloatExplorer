@@ -3,6 +3,7 @@ from contextlib import closing
 from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash, send_file, jsonify
 from datetime import datetime
+from math import floor
 
 app = Flask(__name__)
 
@@ -71,21 +72,21 @@ def dashboard():
         if entry['dt_deploy'] != '':
             foo = dt_query - datetime.strptime(
                 entry['dt_deploy'], '%Y-%m-%d %H:%M:%S')
-            if foo.days > 2:
+            if foo.days >= 2:
                 entry['delta_deploy'] = str(foo.days) + ' d'
             else:
                 h = int(foo.total_seconds()/3600)
-                m = round((foo.total_seconds()-h*3600)/60)
-                entry['delta_report'] = '%02d:%02d'%(h,m)
+                m = floor((foo.total_seconds()-h*3600)/60)
+                entry['delta_deploy'] = '%02d:%02d'%(h,m)
         # Compute delta_report
         if entry['dt_report'] != '':
             foo = dt_query - datetime.strptime(
                 entry['dt_report'], '%Y-%m-%d %H:%M:%S')
-            if foo.days > 2:
+            if foo.days >= 2:
                 entry['delta_report'] = str(foo.days) + ' d'
             else:
                 h = int(foo.total_seconds()/3600)
-                m = round((foo.total_seconds()-h*3600)/60)
+                m = floor((foo.total_seconds()-h*3600)/60)
                 entry['delta_report'] = '%02d:%02d'%(h,m)
             # Set Status
             if foo.days < 10:

@@ -38,5 +38,3 @@ The default configuration file is default_conf.py
     File "/home/nils/FloatExplorer/float_explorer.py", line 87, in dashboard
 [Thu Jul 20 18:17:04 2017] [error] [client 141.114.77.13]     h = int(foo.total_seconds()/3600)
 [Thu Jul 20 18:17:04 2017] [error] [client 141.114.77.13] AttributeError: 'datetime.timedelta' object has no attribute 'total_seconds'
-  + Dashboard:Time since deployment duration is not displayed when less than a day
-  + Dashboard:Time since last report can have 60 minutes instead of X hours and 0 minutes
