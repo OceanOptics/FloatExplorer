@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Float{% endblock %}
+{% block title %}{{ lab_id }}{% endblock %}
 {% block body %}
 <div class="container-fluid">
   <div class="row">
@@ -23,7 +23,9 @@
       <div id="timeseries" style="min-width:800px; width: 100%; height: 540px;"></div>
       <div id="profiles" style="min-width:800px; width: 100%; height: 540px;"></div>
       <!--- Map -->
+      {% if config['ONLINE'] %}
       <div id="map-canvas" style="min-width:800px; width: 100%; height: 600px; margin-bottom:20px"></div>
+      {% endif %}
     </main>
 
   </div>
@@ -41,10 +43,12 @@
     setTimeSeriesPlot("{{ lab_id }}", setProfilesPlot);
   });
 </script>
+{% if config['ONLINE'] %}
 <!-- Loading Google Maps API -->
 <script type='text/javascript'>
 var path2geojson = path2data + '{{ lab_id }}.geo.json'</script>
 <script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBoztEvoNTCie1g87RFSuhgUmjL8QqTg0"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>
+{% endif %}
 {% endblock %}

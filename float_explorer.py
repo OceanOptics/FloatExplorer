@@ -60,7 +60,7 @@ def teardown_request(exception):
 
 @app.route('/')
 def dashboard():
-    cur = g.db.execute('SELECT * FROM meta ORDER BY lab_id asc')
+    cur = g.db.execute('SELECT * FROM meta ORDER BY dt_report desc')
     entries = cur.fetchall()
 
     # Update delta for each float
@@ -109,7 +109,7 @@ def dashboard():
         if 'PROVOR' in entry['model']:
             entry['profile'] = entry['profile'] / 100
         # Render Missing WMO
-        if entry['wmo'] == -1:
+        if entry['wmo'] < 0:
             entry['wmo'] = 'NA'
     return render_template('dashboard.html', entries=entries)
 
