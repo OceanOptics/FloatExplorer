@@ -174,6 +174,7 @@ var pr_layout = {
   title: 'Profile',
   showlegend: false,
   autosize: true,
+  hovermode:'closest',
   yaxis: {
     domain: [0, 0.85],
     title: 'Pressure (dBar)',
