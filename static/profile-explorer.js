@@ -197,7 +197,7 @@ var pr_layout = {
   // },
   xaxis: {
     domain: [0, 0.225],
-    title: 'PAR ',
+    title: 'PAR (umol photons m<sup>-2</sup> s<sup>-1</sup>)',
     titlefont: {color: '#1f77b4'},
     tickfont: {color: '#1f77b4'},
     tickcolor: '#1f77b4',
