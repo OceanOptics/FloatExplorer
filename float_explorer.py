@@ -1,7 +1,7 @@
 import sqlite3
 from contextlib import closing
 from flask import Flask, request, session, g, redirect, url_for, \
-    abort, render_template, flash, send_file, jsonify
+    abort, render_template, flash, send_file, jsonify, send_from_directory
 from datetime import datetime
 from math import floor
 
@@ -137,6 +137,11 @@ def page_not_found(e):
 def page_not_found(e):
     return render_template('500.html'), 500
 
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__':
     app.run()

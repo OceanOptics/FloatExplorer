@@ -18,10 +18,11 @@
     </nav>
 
     <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-      <h1>Float {{ lab_id }}</h1>
+      <!-- <h1>Float {{ lab_id }}</h1> -->
       <!-- Plotly chart -->
       <div id="timeseries" style="min-width:800px; width: 100%; height: 540px;"></div>
       <div id="profiles" style="min-width:800px; width: 100%; height: 540px;"></div>
+      <div id="contours" style="min-width:800px; width: 100%; height: 540px;"></div>
       <!--- Map -->
       {% if config['ONLINE'] %}
       <div id="map-canvas" style="min-width:800px; width: 100%; height: 600px; margin-bottom:20px"></div>
@@ -41,12 +42,14 @@
 <script type="text/javascript">
   $(document).ready(function(){
     setTimeSeriesPlot("{{ lab_id }}", setProfilesPlot);
+    setContourPlot("{{ lab_id }}", ['t', 'chla']);
   });
 </script>
 {% if config['ONLINE'] %}
 <!-- Loading Google Maps API -->
 <script type='text/javascript'>
-var path2geojson = path2data + '{{ lab_id }}.geo.json'</script>
+  var path2geojson = path2data + '{{ lab_id }}.geo.json';
+</script>
 <script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBoztEvoNTCie1g87RFSuhgUmjL8QqTg0"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>

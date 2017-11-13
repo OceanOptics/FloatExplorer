@@ -17,7 +17,7 @@ var options = {
   showLink: false,
   // linkText: 'Change this text',
   staticPlot: false,
-  scrollZoom: true,
+  scrollZoom: false,
   displayModeBar:true
 };
 // default colors in order: ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"]
@@ -26,11 +26,18 @@ var options = {
 // Figures Layout //
 ////////////////////
 var ts_layout = {
-  title: 'Average in Mixed Layer',
+  // title: 'Average in Mixed Layer',
+  margin: {
+    l: 50,
+    r: 50,
+    b: 0,
+    t: 20,
+    pad: 4
+  },
   showlegend: false,
   autosize: true,
   xaxis: {
-    domain: [0.15, 0.85],
+    domain: [0.1, 0.9],
     autorange: true,
     showgrid: true,
     zeroline: false,
@@ -172,6 +179,13 @@ var ts_layout = {
 var pr_layout = {
   // title: 'Most recent profile (nº' + msg_id + ')',
   title: 'Profile',
+  margin: {
+    l: 50,
+    r: 50,
+    b: 50,
+    t: 75,
+    pad: 4
+  },
   showlegend: false,
   autosize: true,
   hovermode:'y',
@@ -307,6 +321,27 @@ var pr_layout = {
     overlaying: 'x',
     side:'bottom'
   }
+};
+
+var ct_layout = {
+  // title: '2D Timeseries',
+  margin: {
+    l: 50,
+    r: 50,
+    b: 50,
+    t: 20,
+    pad: 4
+  },
+  xaxis: {domain: [0, 0.45]},
+  yaxis: {
+    title: 'Pressure (dBar)',
+    autorange: 'reversed'
+  },
+  xaxis2: {
+    domain: [0.55, 1],
+    anchor:'y'
+  },
+  showlegend:false
 };
 
 ///////////
@@ -541,6 +576,92 @@ function updateProfilesPlot(usr_id, msg_id, dt=null){
     Plotly.redraw(fig);
   }).fail(function() {
     console.log("ERROR: Loading " + usr_id + "." + msg_id + ".json");
+  });
+}
+
+function setContourPlot(usr_id, var_ids){
+  $.getJSON( path2data + usr_id + "." + var_ids[0] + ".contour.json", function( _data ) {
+    // Set first trace
+    var trace1_bg = {
+      name: _data['name'],
+      x: _data['dt'],
+      y: _data['p'],
+      z: _data['data'],
+      type: 'contour',
+      // Set colorscale (default: Jet)
+      colorscale: ('colorscale' in _data ? _data['colorscale'] : 'Jet'),
+      reversescale: _data['reversescale'],
+      // Set maximum number of contour lines
+      ncontours:5,
+      // Color bar label
+      colorbar:{
+        title: _data['label'],
+        titleside:'right',
+        x:0.45,
+      },
+      // Smooth contour coloring
+      contours: {coloring: 'heatmap'},
+      // Information to display when mouse ohover
+      hoverinfo: 'z+name'
+    };
+
+    var trace1_MLD = {
+      name: 'MLD',
+      x: _data['dt'],
+      y: _data['mld'],
+      mode: 'lines',
+      line:{color:'rgba(67,67,67,1)'},
+      hoverinfo: 'y+name',
+      color:'black'
+    }
+
+    $.getJSON( path2data + usr_id + "." + var_ids[1] + ".contour.json", function( _data ) {  
+      // Set second trace (if first trace loaded properly)
+      var trace2_bg = {
+        name: _data['name'],
+        x: _data['dt'],
+        y: _data['p'],
+        z: _data['data'],
+        type: 'contour',
+        // Set colorscale (default: Jet)
+        colorscale: ('colorscale' in _data ? _data['colorscale'] : 'Jet'),
+        reversescale: _data['reversescale'],
+        // Set maximum number of contour lines
+        ncontours:5,
+        // Color bar label
+        colorbar:{
+          title: _data['label'],
+          titleside:'right',
+          x:1
+        },
+        // Information to display when mouse ohover
+        hoverinfo: 'z+name',
+        // Smooth contour coloring
+        contours: {coloring: 'heatmap'},
+        // Link Pressure (y) axis, use new Time axis (x) 
+        xaxis: 'x2'
+      };
+
+      var trace2_MLD = {
+        name: 'MLD',
+        x: _data['dt'],
+        y: _data['mld'],
+        mode: 'lines',
+        line:{color:'rgba(67,67,67,1)'},
+        hoverinfo: 'y+name',
+        color:'black',
+        xaxis: 'x2'
+      }
+
+      var data = [trace1_bg, trace2_bg, trace1_MLD, trace2_MLD];
+
+      // Create New Plot
+      Plotly.newPlot('contours', data, ct_layout, options);
+    }).fail(function() {
+      console.log("ERROR: Loading " + usr_id + "." + var_ids[1] + ".contour.json");
+    });
+  }).fail(function() {
+    console.log("ERROR: Loading " + usr_id + "." + var_ids[0] + ".contour.json");
   });
 }
 
