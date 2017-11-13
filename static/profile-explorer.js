@@ -4,10 +4,21 @@
  *
  */
 
-//////////////////
-// Path to data //
-//////////////////
+//////////////////////
+// Global Variables //
+//////////////////////
+/*
+ * The following global variables should be set in the parent script:
+ *    usr_id
+ *    path2data
+ *
+ */
 // var path2data = '/static/data/'
+// var usr_id = 'n0572';
+var msg_id = 1;
+var last_msg_id = 1;
+var msg_ids = null;
+var msg_dts = null;
 
 ////////////////////
 // Plotly Options //
@@ -216,7 +227,7 @@ var pr_layout = {
     tickfont: {color: '#1f77b4'},
     tickcolor: '#1f77b4',
     linecolor: '#1f77b4',
-    showgrid: false,
+    showgrid: true,
     showline: true,
     zeroline: false,
     ticks: 'outside',
@@ -229,7 +240,7 @@ var pr_layout = {
     tickfont: {color: '#ff7f0e'},
     tickcolor: '#ff7f0e',
     linecolor: '#ff7f0e',
-    showgrid: false,
+    showgrid: true,
     showline: true,
     zeroline: false,
     ticks: 'outside',
@@ -243,7 +254,7 @@ var pr_layout = {
     tickfont: {color: '#2ca02c'},
     tickcolor: '#2ca02c',
     linecolor: '#2ca02c',
-    showgrid: true,
+    showgrid: false,
     showline: true,
     zeroline: false,
     ticks: 'outside',
@@ -257,7 +268,7 @@ var pr_layout = {
     tickfont: {color: '#d62728'},
     tickcolor: '#d62728',
     linecolor: '#d62728',
-    showgrid: false,
+    showgrid: true,
     showline: true,
     zeroline: false,
     ticks: 'outside',
@@ -285,7 +296,7 @@ var pr_layout = {
     tickfont: {color: '#9467bd'},
     tickcolor: '#9467bd',
     linecolor: '#9467bd',
-    showgrid: true,
+    showgrid: false,
     showline: true,
     zeroline: false,
     ticks: 'outside',
@@ -313,7 +324,7 @@ var pr_layout = {
     tickfont: {color: '#e377c2'},
     tickcolor: '#e377c2',
     linecolor: '#e377c2',
-    showgrid: true,
+    showgrid: false,
     showline: true,
     zeroline: false,
     ticks: 'outside',
@@ -347,7 +358,7 @@ var ct_layout = {
 ///////////
 // Plots //
 ///////////
-function setTimeSeriesPlot(usr_id, callback=null){
+function setTimeSeriesPlot(callback=null){
   $.getJSON( path2data + usr_id + ".timeseries.json", function( _data ) {
     var trace_id = {
         name: usr_id,
@@ -417,20 +428,24 @@ function setTimeSeriesPlot(usr_id, callback=null){
     var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace_id];
     // Create new plot
     Plotly.newPlot('timeseries', data, ts_layout, options);
+    // Set globals for Profile Plot
+    var i = _data['profile_id'].length-1;  // Last Index
+    last_msg_id = _data['profile_id'][i];  // Maximum number of profiles
+    msg_id = last_msg_id;                  // By default first profile displayed is the last one
+    msg_dts = ('dt' in _data ? _data['dt'] : null);
+    msg_ids = ('profile_id' in _data ? _data['profile_id'] : null);
     // Set Last Profiles plot if requested
     if (callback != null){
-      var i = _data['profile_id'].length-1;  // Last Index
-      var msg_id = pad(_data['profile_id'][i],3)
-      callback(usr_id, msg_id, _data['dt'][i].replace('T', ' '));
+      callback(_data['dt'][i].replace('T', ' '));
     };
     // Link Time Series with Profiles
-    linkTimeSeriesWithProfiles(usr_id);
+    linkTimeSeriesWithProfiles();
   }).fail(function() {
     console.log("ERROR: Loading time series from " + usr_id);
   });
 }
 
-function updateTimeSeriesPlot(usr_id){
+function updateTimeSeriesPlot(){
   var fig = document.getElementById('timeseries')
   // 2. Update Profiles Data
   $.getJSON( path2data + usr_id + ".timeseries.json", function(_data) {
@@ -457,16 +472,17 @@ function updateTimeSeriesPlot(usr_id){
     // 4. Update Profiles Plot
     if ('layout' in document.getElementById('profiles')) {
       var i = _data['profile_id'].length-1;  // Last Index
-      var msg_id = pad(_data['profile_id'][i],3)
-      updateProfilesPlot(usr_id, msg_id, _data['dt'][i].replace('T', ' '));
+      msg_id = pad(_data['profile_id'][i],3)
+      updateProfilesPlot(_data['dt'][i].replace('T', ' '));
     };
   }).fail(function() {
     console.log("ERROR: Loading time series from " + usr_id);
   });
 }
 
-function setProfilesPlot(usr_id, msg_id, dt=null){
-  $.getJSON( path2data + usr_id + "." + msg_id + ".profile.json", function( _data ) {
+function setProfilesPlot(){
+  var msg_id_str = pad(msg_id, 3)
+  $.getJSON( path2data + usr_id + "." + msg_id_str + ".profile.json", function( _data ) {
     // Set traces
     var trace2 = {
         x: _data['t'],
@@ -534,28 +550,31 @@ function setProfilesPlot(usr_id, msg_id, dt=null){
       };
     var data = [trace8, trace2, trace3, trace4, trace5, trace6, trace7];
     // Update layout title
-    if (dt == null) {
-      pr_layout.title = 'Profile N&deg;' + msg_id;
+    if (msg_dts == null || msg_ids == null) {
+      pr_layout.title = 'Profile N&deg;' + msg_id_str;
     } else {
-      pr_layout.title = 'N&deg;' + msg_id + ' at ' + dt;
+      var dt = msg_dts[msg_ids.indexOf(msg_id)];
+      pr_layout.title = 'N&deg;' + msg_id_str + ' at ' + dt;
     }
     // Create New Plot
     Plotly.newPlot('profiles', data, pr_layout, options);
   }).fail(function() {
-    console.log("ERROR: Loading " + usr_id + "." + msg_id + ".json");
+    console.log("ERROR: Loading " + usr_id + "." + msg_id_str + ".json");
   });
 }
 
-function updateProfilesPlot(usr_id, msg_id, dt=null){
+function updateProfilesPlot(){
   var fig = document.getElementById('profiles')
-  // 1. Update Profiles Title
-  if (dt == null) {
-    fig.layout.title = 'Profile N&deg;' + msg_id;
+  // 1. Update Profiles title
+  var msg_id_str = pad(msg_id, 3)
+  if (msg_dts == null || msg_ids == null) {
+    fig.layout.title = 'Profile N&deg;' + msg_id_str;
   } else {
-    fig.layout.title = 'N&deg;' + msg_id + ' at ' + dt;
+    var dt = msg_dts[msg_ids.indexOf(msg_id)];
+    fig.layout.title = 'N&deg;' + msg_id_str + ' at ' + dt;
   }
   // 2. Update Profiles Data
-  $.getJSON( path2data + usr_id + "." + msg_id + ".profile.json", function( _data ) {
+  $.getJSON( path2data + usr_id + "." + msg_id_str + ".profile.json", function( _data ) {
     fig.data[0].x = ('par' in _data ? _data['par'] : []);
     fig.data[0].y = ('par' in _data ? _data['p'] : []);
     fig.data[1].x = ('t' in _data ? _data['t'] : []);
@@ -575,11 +594,11 @@ function updateProfilesPlot(usr_id, msg_id, dt=null){
     // 3. Redraw Profiles
     Plotly.redraw(fig);
   }).fail(function() {
-    console.log("ERROR: Loading " + usr_id + "." + msg_id + ".json");
+    console.log("ERROR: Loading " + usr_id + "." + msg_id_str + ".json");
   });
 }
 
-function setContourPlot(usr_id, var_ids){
+function setContourPlot(var_ids){
   $.getJSON( path2data + usr_id + "." + var_ids[0] + ".contour.json", function( _data ) {
     // Set first trace
     var trace1_bg = {
@@ -657,6 +676,8 @@ function setContourPlot(usr_id, var_ids){
 
       // Create New Plot
       Plotly.newPlot('contours', data, ct_layout, options);
+      // Link Contour Plot with Profiles
+      linkContourPlotWithProfiles();
     }).fail(function() {
       console.log("ERROR: Loading " + usr_id + "." + var_ids[1] + ".contour.json");
     });
@@ -675,25 +696,67 @@ function removeProfileExplorer() {
 ////////////////////////////////////
 // Link time series with profiles //
 ////////////////////////////////////
-function linkTimeSeriesWithProfiles(usr_id){
+function linkTimeSeriesWithProfiles(){
   var fig_timeseries = document.getElementById('timeseries')
   fig_timeseries.on('plotly_click', function(data){
     // Draw selected profiles
-    // 0. Find usr_id and msg_id
-    usr_id = fig_timeseries.data[7].name;
+    // 0. Update msg_id
     i = fig_timeseries.data[0].x.indexOf(data.points[0].x.replace(' ', 'T'))
-    msg_id = pad(fig_timeseries.data[7].x[i],3)
+    msg_id = fig_timeseries.data[7].x[i]
     // 1. Update Profiles Title
     var fig_profiles = document.getElementById('profiles')
     if ('layout' in fig_profiles) {
       // 2. Update Profiles Plot
-      updateProfilesPlot(usr_id, msg_id, data.points[0].x);
+      updateProfilesPlot();
     } else {
       // 2. Create Profiles Plot
-      setProfilesPlot(usr_id, msg_id, data.points[0].x);
+      setProfilesPlot();
     };
   });
 }
+
+function linkContourPlotWithProfiles(){
+  var fig_contours = document.getElementById('contours')
+  fig_contours.on('plotly_click', function(data){
+    // Use figure Timeseries as reference for conversion from date to msg_id
+    var fig_timeseries = document.getElementById('timeseries')
+    // Draw selected profiles
+    // 0. Update msg_id
+    i = fig_timeseries.data[0].x.indexOf(data.points[0].x.replace(' ', 'T'))
+    msg_id = fig_timeseries.data[7].x[i]
+    // 1. Update Profiles Title
+    var fig_profiles = document.getElementById('profiles')
+    if ('layout' in fig_profiles) {
+      // 2. Update Profiles Plot
+      updateProfilesPlot();
+    } else {
+      // 2. Create Profiles Plot
+      setProfilesPlot();
+    };
+  });
+}
+
+////////////////////////
+// Keyboard shortcuts //
+////////////////////////
+$(document).keydown(function(e){
+  switch(e.which) {
+    case 40: // down
+    case 37: // left (previous profile)
+    msg_id = (msg_id > 1 ? msg_id - 1 : msg_id);
+    break;
+
+    case 38: // up
+    case 39: // right (next profile)
+    msg_id = (msg_id < last_msg_id ? msg_id + 1 : msg_id);
+    break;
+
+    default: return; // exit this handler for other keys
+  }
+  e.preventDefault(); // prevent the default action (scroll / move caret)
+  // Update Profile with new msg_id
+  updateProfilesPlot();
+});
 
 /////////////
 // Helpers //

@@ -33,16 +33,19 @@
 </div>
 {% endblock %}
 {% block js %}
-<!-- Plotly.js -->
-<script type='text/javascript'>var path2data = "{{ url_for('static', filename='data/') }}"</script>
+<!-- Set ProfileExplorer parameters -->
+<script type='text/javascript'>
+  var path2data = "{{ url_for('static', filename='data/') }}";
+  var usr_id = "{{ lab_id }}";
+</script>
 <script src="{{ url_for('static', filename='plotly.min.js') }}"></script>
 <!-- Load ProfileExplorer script -->
 <script src="{{ url_for('static', filename='profile-explorer.js') }}"></script>
 <!-- Run Profile Explorer -->
 <script type="text/javascript">
   $(document).ready(function(){
-    setTimeSeriesPlot("{{ lab_id }}", setProfilesPlot);
-    setContourPlot("{{ lab_id }}", ['t', 'chla']);
+    setTimeSeriesPlot(setProfilesPlot);
+    setContourPlot(['t', 'chla']);
   });
 </script>
 {% if config['ONLINE'] %}
