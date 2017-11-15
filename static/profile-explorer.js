@@ -432,11 +432,11 @@ function setTimeSeriesPlot(callback=null){
     var i = _data['profile_id'].length-1;  // Last Index
     last_msg_id = _data['profile_id'][i];  // Maximum number of profiles
     msg_id = last_msg_id;                  // By default first profile displayed is the last one
-    msg_dts = ('dt' in _data ? _data['dt'] : null);
+    msg_dts = ('dt' in _data ? _data['dt'].map(function(x){return x.replace('T', ' ');}) : null);
     msg_ids = ('profile_id' in _data ? _data['profile_id'] : null);
     // Set Last Profiles plot if requested
     if (callback != null){
-      callback(_data['dt'][i].replace('T', ' '));
+      callback();
     };
     // Link Time Series with Profiles
     linkTimeSeriesWithProfiles();
