@@ -144,9 +144,9 @@ def engineering(lab_id=None):
     return render_template('engineering.html', float_list=float_list, lab_id=lab_id)
 
 
-@app.route('/documentations')
-def documentations():
-    return render_template('documentations.html')
+@app.route('/documentation')
+def documentation():
+    return render_template('documentation.html')
 
 
 @app.errorhandler(404)
