@@ -37,6 +37,11 @@ def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
                 for idx, value in enumerate(row))
 
+def get_float_list():
+    # Get list of floats
+    cur = g.db.execute('SELECT wmo,lab_id FROM meta ORDER BY lab_id asc')
+    return cur.fetchall()
+
 @app.before_request
 def before_request():
     g.db = connect_db()
@@ -54,9 +59,9 @@ def teardown_request(exception):
 #         is avaible within each function
 #         works in threaded environment
 
-###########
-# ROUTING #
-###########
+################
+# PAGE ROUTING #
+################
 
 
 @app.route('/')
@@ -118,14 +123,30 @@ def dashboard():
 @app.route('/float/')
 @app.route('/float/<lab_id>')
 def float(lab_id=None):
-    # Get list of floats
-    cur = g.db.execute('SELECT wmo,lab_id FROM meta ORDER BY lab_id asc')
-    float_list = cur.fetchall()
+    # Get float list
+    float_list = get_float_list()
     # Re-route to first float
     if lab_id == None:
-        return redirect(url_for('float', lab_id=float_list[0]['lab_id']))
+        return redirect(url_for('float', lab_id=float_list[-1]['lab_id']))
     # Render page
     return render_template('float.html', float_list=float_list, lab_id=lab_id)
+
+
+@app.route('/engineering/')
+@app.route('/engineering/<lab_id>')
+def engineering(lab_id=None):
+    # Get float list
+    float_list = get_float_list()
+    # Re-route to first float
+    if lab_id == None:
+        return redirect(url_for('engineering', lab_id=float_list[-1]['lab_id']))
+    # Render page
+    return render_template('engineering.html', float_list=float_list, lab_id=lab_id)
+
+
+@app.route('/documentations')
+def documentations():
+    return render_template('documentations.html')
 
 
 @app.errorhandler(404)
@@ -142,6 +163,22 @@ def page_not_found(e):
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+###############
+# API routing #
+###############
+
+@app.route('/api/eng/<lab_id>/<varname>')
+def api_eng(lab_id, varname):
+    cur = g.db.execute('SELECT dt, ' + varname + ' ' +
+                       'FROM engineering_data ' +
+                       'WHERE lab_id = "' + lab_id + '" ' +
+                       'ORDER BY profile_id desc')
+    data = cur.fetchall()
+    return jsonify(x=[foo['dt'] for foo in data if foo['dt'] is not None],
+                   y=[foo[varname] for foo in data if foo[varname] is not None],
+                   type='scatter')
+
 
 if __name__ == '__main__':
     app.run()

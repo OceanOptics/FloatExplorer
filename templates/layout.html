@@ -29,24 +29,23 @@
       <a class="navbar-brand" href="{{ url_for('dashboard') }}">Float Explorer</a>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-          {% if request.path == url_for('dashboard') %}
-          <li class="nav-item active">
-            <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard <span class="sr-only">(current)</span></a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-          </li>
-          {% endif %}
-          {% if request.path[0:6] == "/float" %}
-          <li class="nav-item  active">
-            <a class="nav-link" href="{{ url_for('float') }}">Float <span class="sr-only">(current)</span></a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('float') }}">Float</a>
-          </li>
-          {% endif %}
+          {% set navigation_bar = [
+              ('dashboard', 'Dashboard'),
+              ('float', 'Floats'),
+              ('engineering', 'Engs'),
+              ('documentations', 'Docs')
+          ] -%}
+
+
+          {% set active_page = active_page|default('dashboard') -%}
+
+          {% for id, caption in navigation_bar %}
+              <li class="nav-item{% if id == active_page %} active{% endif %}">
+                <a class="nav-link" href="{{ url_for(id|e) }}">{{ caption|e }}
+                  {% if id == active_page %}<span class="sr-only">(current)</span>{% endif %}</a>
+              </li>
+          {% endfor %}
+
         </ul>
       </div>
     </nav>

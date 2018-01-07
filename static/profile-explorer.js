@@ -222,7 +222,7 @@ var pr_layout = {
   // },
   xaxis: {
     domain: [0, 0.225],
-    title: 'PAR (umol photons m<sup>-2</sup> s<sup>-1</sup>)',
+    title: 'PAR (&mu;mol photons m<sup>-2</sup> s<sup>-1</sup>)',
     titlefont: {color: '#1f77b4'},
     tickfont: {color: '#1f77b4'},
     tickcolor: '#1f77b4',
@@ -333,7 +333,6 @@ var pr_layout = {
     side:'bottom'
   }
 };
-
 var ct_layout = {
   // title: '2D Timeseries',
   margin: {
@@ -757,6 +756,52 @@ $(document).keydown(function(e){
   // Update Profile with new msg_id
   updateProfilesPlot();
 });
+
+/////////////////////////
+// Engineering Figures //
+/////////////////////////
+function setEngineeringTimeSeriesPlot(){
+  // Disable Async mode for getJSON
+  $.ajaxSetup({
+    async: false
+  });
+  // Load layout
+  var layout = null;
+  $.getJSON( url_static + 'layout_engineeringtimeseries.json', function( _layout ) {
+    layout = _layout;
+  }).fail(function() {
+    console.error("ERROR: Unable to load layout.");
+    return;
+  });
+  // Load data for each variables
+  var varid = ['AirPumpVolts', 'BuoyancyPumpVolts', 'QuiescentVolts','Sbe41cpVolts',
+               'AirPumpAmps', 'BuoyancyPumpAmps', 'QuiescentAmps', 'Sbe41cpAmps'];
+  var varname = ['Air Pump', 'Buoyancy Pump', 'Quiescent', 'Sbe41cp',
+                 'Air Pump', 'Buoyancy Pump', 'Quiescent', 'Sbe41cp'];
+  var varyaxis = ['y', 'y2', 'y3', 'y4', 'y5', 'y6', 'y7', 'y8'];
+  var varcolor = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
+  var data = [];
+  for (var i = 0; i < varid.length; i++) {
+    // (function(i) {
+      $.getJSON( url_api + varid[i], function( _data ) {
+        data[i] = _data;
+        data[i]['name'] = varname[i];
+        data[i]['yaxis'] = varyaxis[i];
+        data[i]['marker'] = {'color': varcolor[i]}
+      }).fail(function() {
+        console.error("ERROR: Unable to load data.");
+        return;
+      });
+    // })(i);
+  }
+  // Re-Enable Async mode for getJSON
+  $.ajaxSetup({
+    async: true
+  });
+  // console.log('Display data', data)
+  // Plot data
+  Plotly.newPlot('engineering_timeseries', data, layout, options);
+}
 
 /////////////
 // Helpers //

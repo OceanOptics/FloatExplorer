@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% set active_page = "float" %}
+{% set active_page = "engineering" %}
 {% block title %}{{ lab_id }}{% endblock %}
 {% block body %}
 <div class="container-fluid">
@@ -9,9 +9,9 @@
       {% for f in float_list %}
         <li class="nav-item">
           {% if f.lab_id == lab_id %}
-            <a class="nav-link active" href="{{ url_for('float', lab_id=f.lab_id) }}">{{ f.lab_id }}<span class="sr-only">(current)</span></a>
+            <a class="nav-link active" href="{{ url_for('engineering', lab_id=f.lab_id) }}">{{ f.lab_id }}<span class="sr-only">(current)</span></a>
           {% else %}
-            <a class="nav-link" href="{{ url_for('float', lab_id=f.lab_id) }}">{{ f.lab_id }}</a>
+            <a class="nav-link" href="{{ url_for('engineering', lab_id=f.lab_id) }}">{{ f.lab_id }}</a>
           {% endif %}
         </li>
       {% endfor %}
@@ -19,15 +19,9 @@
     </nav>
 
     <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-      <!-- <h1>Float {{ lab_id }}</h1> -->
+      <!-- <h1>Engineering Data {{ lab_id }}</h1> -->
       <!-- Plotly chart -->
-      <div id="timeseries" style="min-width:800px; width: 100%; height: 540px;"></div>
-      <div id="profiles" style="min-width:800px; width: 100%; height: 540px;"></div>
-      <div id="contours" style="min-width:800px; width: 100%; height: 540px;"></div>
-      <!--- Map -->
-      {% if config['ONLINE'] %}
-      <div id="map-canvas" style="min-width:800px; width: 100%; height: 600px; margin-bottom:20px"></div>
-      {% endif %}
+      <div id="engineering_timeseries" style="min-width:800px; width: 100%; height: 640px;"></div>
     </main>
 
   </div>
@@ -36,8 +30,8 @@
 {% block js %}
 <!-- Set ProfileExplorer parameters -->
 <script type='text/javascript'>
-  var path2data = "{{ url_for('static', filename='data/') }}";
-  var usr_id = "{{ lab_id }}";
+  var url_static = "{{ url_for('static', filename='') }}";
+  var url_api = "{{ url_for('api_eng', lab_id=lab_id, varname='') }}";
 </script>
 <script src="{{ url_for('static', filename='plotly.min.js') }}"></script>
 <!-- Load ProfileExplorer script -->
@@ -45,8 +39,7 @@
 <!-- Run Profile Explorer -->
 <script type="text/javascript">
   $(document).ready(function(){
-    setTimeSeriesPlot(setProfilesPlot);
-    setContourPlot(['t', 'chla']);
+    setEngineeringTimeSeriesPlot();
   });
 </script>
 {% if config['ONLINE'] %}

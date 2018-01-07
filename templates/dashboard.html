@@ -1,12 +1,13 @@
 {% extends "layout.html" %}
+{% set active_page = "dashboard" %}
 {% block title %}Dashboard{% endblock %}
 {% block body %}
   {% if not (session.logged_in) %}
     <div class="container">
       <div class="jumbotron">
         <h1>BGC-Argo floats in the study area of NAAMES</h1>
-        <p class="lead">Floats listed below are deployed during <a href="https://naames.larc.nasa.gov">NAAMES</a> cruises or are part of the <a href="http://biogeochemical-argo.org">BGC Argo</a> program. They are located in the area of study of the <a href="https://naames.larc.nasa.gov">NAAMES</a> project. For publication, use data processed by the GDAC or contact us to properly cite the method used to process the data and acknowledge collaborators and founding. <br />
-        NOTE: UMaine Floats are not yet available on the GDAC.</p>
+        <p class="lead">Floats listed below are deployed during <a href="https://naames.larc.nasa.gov">NAAMES</a> cruises or are part of the <a href="http://biogeochemical-argo.org">Bio-Argo</a> program. They are located in the area of study of the <a href="https://naames.larc.nasa.gov">NAAMES</a> project. For publication, use data processed by the GDAC or contact us to properly cite the method used to process the data and acknowledge collaborators and founding. <br />
+        NOTE: UMaine Floats will be available on the GDAC soon.</p>
       </div>
     </div>
   {% endif %}

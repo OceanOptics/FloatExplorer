@@ -12,6 +12,7 @@
 
 # FloatExplorer's configuration
 DATABASE = '/tmp/float_explorer.db'
+URL_FTP = 'ftp://<your-ftp>/'
 DEBUG = True
 SECRET_KEY = 'Your secret key'
 PROJECT_NAME = 'Float Explorer'

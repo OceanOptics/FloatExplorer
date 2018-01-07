@@ -29,6 +29,7 @@ The default configuration file is default_conf.py
   + Link to data on FTP
 
 # BUGS
+  + BUG in keyboard navigation with PROVOR
   + APP crash when no DB
   + if empty DB, float page crash
       return redirect(url_for('float', lab_id=float_list[0]['lab_id']))

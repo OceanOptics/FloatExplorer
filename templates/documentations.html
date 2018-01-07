@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% set active_page = "documentations" %}
+{% block title %}{{ lab_id }}{% endblock %}
+{% block body %}
+<div class="container-fluid">
+  <div class="row">
+    <main class="col-sm-12">
+      <h2>Documentations</h2>
+      <h4>Processing</h4>
+      <p>The NAAMES Bio-Argo floats send their profiles to the UMaine server. The data is processed and rendered in near real-time. The different level of data are available on our <a href="{{ config['PROJECT_NAME'] }}">ftp</a> and are described below:
+      <ul>
+        <li>RAW: all msg and log received from Navis BGCi including incomplete files due to early end of transmission.</li>
+        <li>RAW_EOT: only complete msg and log are kept.</li>
+        <li>L0: hexadecimal data stored in msg is decoded in decimal numbers and cnverted to csv files.</li>
+        <li>L1: calibrate level 0 data using manufacturer calibration.</li>
+        <li>L2: adjust and correct the data and compute additional product.
+          <ul>
+            <li>fchl is corrected for non-photochemical quenching (Xing et al. 2012)</li>
+            <li>bbp is computed from beta (Zhang et al, 2009, Sullivan et al. 2013)</li>
+            <li>POC is computed from bbp </li>
+            <li>C_phyto is computed from bbp</li>
+          </ul>
+        </li>
+      </ul>
+      Calibration parameters used are available <a href="{{ config['PROJECT_NAME'] }}param/">here</a>.</p>
+      <p>Table 1. List of parameters.</p>
+      <table class="table">
+        <!-- <caption>List of parameters measured or products.</caption> -->
+        <thead>
+          <tr>
+            <th scope="col">Variable</th>
+            <th scope="col">Description</th>
+            <th scope="col">Units</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>profile</td><td>profile number</td><td>-</td></tr>
+          <tr><td>dt</td><td>date and time</td><td>yyyy/mm/dd hh:mm</td></tr>
+          <tr><td>lat</td><td>latitude</td><td>decimal degree North</td></tr>
+          <tr><td>lon</td><td>longitude</td><td>decimal degree East</td></tr>
+          <tr><td>p</td><td>pressure</td><td>dbar</td></tr>
+          <tr><td>t</td><td>in-situ temperature ITS-90</td><td>deg C</td></tr>
+          <tr><td>sp</td><td>pratical salinity PSS-78</td><td>no units</td></tr>
+          <tr><td>o2</td><td>oxygen concentration</td><td>&mu;mol/kg</td></tr>
+          <tr><td>turb</td><td>turbidity</td><td>NTU</td></tr>
+          <tr><td>fchl</td><td>chlorophyll a fluorescence</td><td>mg m<sup>-3</sup></td></tr>
+          <tr><td>beta</td><td>angular scatterance at 700 nm with a scattering angle of 124</td><td>m<sup>-1</sup> sr<sup>-1</sup></td></tr>
+          <tr><td>fdom</td><td>fluorescent colored dissolved organic matter (CDOM)</td><td>mg m<sup>-3</sup></td></tr>
+          <tr><td>ed###</td><td>downwelling irradiance at ### nm</td><td>W m<sup>-2</sup> nm<sup>-1</sup></td></tr>
+          <tr><td>par</td><td>photosynthetically available radiation</td><td>&mu;mol photons m<sup>-2</sup> s<sup>-1</sup></td></tr>
+          <tr><td>c</td><td>attenuation</td><td>m<sup>-1</sup></td></tr>
+          <tr><td>bbp</td><td>particulate backscatter at 700 nm</td><td>m<sup>-1</sup></td></tr>
+          <tr><td>C_phyto</td><td>phytoplnakton carbon</td><td>mg m<sup>-3</sup></td></tr>
+          <tr><td>POC</td><td>particulate organic carbon</td><td>mg m<sup>-3</sup></td></tr>
+        </tbody>
+      </table>
+      <!-- <h4>Interactive Graphical Interface</h4>
+      <p></p> -->
+      <h4>References</h4>
+      <p style='padding-left:2em; text-indent: -2em'>J. M. Sullivan, M. S. Twardowski, J. R. V Zaneveld, C. C. Moore, Measuring optical backscattering in water</p>
+      <p style='padding-left:2em; text-indent: -2em'>Xiaodong Zhang, Lianbo Hu, and Ming-Xia He (2009), Scattering by pure seawater: Effect of salinity, Optics Express, Vol. 17, No. 7, 5698-5710</p>
+      <p style='padding-left:2em; text-indent: -2em'>Xing, X., Claustre, H., & Blain, S. (2012). for in vivo chlorophyll fluorescence acquired by autonomous platforms: A case study with instrumented elephant seals in the Kerguelen region (Southern Ocean. Limnol. Oceanogr. http://doi.org/10.4319/lom.2012.10.483</p>
+    </main>
+  </div>
+</div>
+{% endblock %}
