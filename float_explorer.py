@@ -37,11 +37,6 @@ def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
                 for idx, value in enumerate(row))
 
-def get_float_list():
-    # Get list of floats
-    cur = g.db.execute('SELECT wmo,lab_id FROM meta ORDER BY lab_id asc')
-    return cur.fetchall()
-
 @app.before_request
 def before_request():
     g.db = connect_db()
@@ -124,7 +119,8 @@ def dashboard():
 @app.route('/float/<lab_id>')
 def float(lab_id=None):
     # Get float list
-    float_list = get_float_list()
+    cur = g.db.execute('SELECT wmo,lab_id FROM meta ORDER BY lab_id asc')
+    float_list =  cur.fetchall()
     # Re-route to first float
     if lab_id == None:
         return redirect(url_for('float', lab_id=float_list[-1]['lab_id']))
@@ -134,9 +130,10 @@ def float(lab_id=None):
 
 @app.route('/engineering/')
 @app.route('/engineering/<lab_id>')
-def engineering(lab_id=None):
+def engineering(lab_id=None, pi='Emmanuel Boss'):
     # Get float list
-    float_list = get_float_list()
+    cur = g.db.execute('SELECT wmo,lab_id FROM meta WHERE pi = "'+ pi +'" ORDER BY lab_id asc')
+    float_list =  cur.fetchall()
     # Re-route to first float
     if lab_id == None:
         return redirect(url_for('engineering', lab_id=float_list[-1]['lab_id']))
