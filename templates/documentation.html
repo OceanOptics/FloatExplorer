@@ -7,7 +7,7 @@
     <main class="col-sm-12">
       <h2>Documentation</h2>
       <h4>Processing</h4>
-      <p>The NAAMES Bio-Argo floats send their profiles to the UMaine server. The data is processed and rendered in near real-time. The different level of data are available on our <a href="{{ config['PROJECT_NAME'] }}">ftp</a> and are described below:
+      <p>The NAAMES Bio-Argo floats send their profiles to the UMaine server. The data is processed and rendered in near real-time. The different level of data are available on our <a href="{{ config['URL_FTP'] }}">ftp</a> and are described below:
       <ul>
         <li>RAW: all msg and log received from Navis BGCi including incomplete files due to early end of transmission.</li>
         <li>RAW_EOT: only complete msg and log are kept.</li>
@@ -22,7 +22,7 @@
           </ul>
         </li>
       </ul>
-      Calibration parameters used are available <a href="{{ config['PROJECT_NAME'] }}param/">here</a>.</p>
+      Calibration parameters used are available <a href="{{ config['URL_FTP'] }}param/">here</a>.</p>
       <p>Table 1. List of parameters.</p>
       <table class="table">
         <!-- <caption>List of parameters measured or products.</caption> -->

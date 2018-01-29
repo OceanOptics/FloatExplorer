@@ -8,6 +8,10 @@
         <h1>Bio-Argo floats in the study area of NAAMES</h1>
         <p class="lead">Floats listed below are deployed during <a href="https://naames.larc.nasa.gov">NAAMES</a> cruises or are part of the <a href="http://biogeochemical-argo.org">Bio-Argo</a> program. They are located in the area of study of the <a href="https://naames.larc.nasa.gov">NAAMES</a> project. For publication, use data processed by the GDAC or contact us to properly cite the method used to process the data and acknowledge collaborators and founding. <br />
         NOTE: UMaine Floats will be available on the GDAC soon.</p>
+        <p style="text-align: center">
+          <a href="{{ url_for('float') }}"><button type="button" class="btn btn-md btn-primary">Profile Explorer</button></a>
+          <a href="{{ config['URL_FTP'] }}"><button type="button" class="btn btn-md btn-secondary">Get Data</button></a>
+        </p>
       </div>
     </div>
   {% endif %}
