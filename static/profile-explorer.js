@@ -172,7 +172,7 @@ var ts_layout = {
   },
   yaxis7: {
     domain: [0.0, 0.475],
-    title: 'O<sub>2</sub> (mg m<sup>-3</sup>)',
+    title: 'O<sub>2</sub> (mL/L)', //(mg m<sup>-3</sup>)
     titlefont: {color: '#e377c2'},
     tickfont: {color: '#e377c2'},
     tickcolor: '#e377c2',
@@ -319,7 +319,7 @@ var pr_layout = {
   },
   xaxis7: {
     domain: [0, 0.225],
-    title: 'O<sub>2</sub> (mg m<sup>-3</sup>)',
+    title: 'O<sub>2</sub> (mL/L)', //(mg m<sup>-3</sup>)
     titlefont: {color: '#e377c2'},
     tickfont: {color: '#e377c2'},
     tickcolor: '#e377c2',
