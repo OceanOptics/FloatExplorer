@@ -172,10 +172,16 @@ def api_eng(lab_id, varname):
                        'WHERE lab_id = "' + lab_id + '" ' +
                        'ORDER BY profile_id desc')
     data = cur.fetchall()
-    return jsonify(x=[foo['dt'] for foo in data if foo['dt'] is not None],
-                   y=[foo[varname] for foo in data if foo[varname] is not None],
+    x, y = list(), list()
+    for foo in data:
+        if foo['dt'] is not None and foo[varname] is not None and foo[varname] != 0:
+            x.append(foo['dt'])
+            y.append(foo[varname])
+    return jsonify(x=x,
+                   y=y,
                    type='scatter')
 
 
 if __name__ == '__main__':
     app.run()
+    # app.run(host='0.0.0.0')
