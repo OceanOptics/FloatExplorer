@@ -150,42 +150,44 @@ var ts_layout = {
     showline: true,
     zeroline: false,
     ticks: 'outside',
-    anchor: 'free',
+    // anchor: 'free',
     overlaying: 'y4',
-    side: 'left',
-    position: 0
-  },
-  yaxis6: {
-    domain: [0.0, 0.475],
-    title: 'FDOM (mg m<sup>-3</sup>)',
-    titlefont: {color: '#8c564b'},
-    tickfont: {color: '#8c564b'},
-    tickcolor: '#8c564b',
-    linecolor: '#8c564b',
-    showgrid: false,
-    showline: true,
-    zeroline: false,
-    ticks: 'outside',
-    anchor: 'x',
-    overlaying: 'y4',
-    side: 'right'
-  },
-  yaxis7: {
-    domain: [0.0, 0.475],
-    title: 'O<sub>2</sub> (mL/L)', //(mg m<sup>-3</sup>)
-    titlefont: {color: '#e377c2'},
-    tickfont: {color: '#e377c2'},
-    tickcolor: '#e377c2',
-    linecolor: '#e377c2',
-    showgrid: false,
-    showline: true,
-    zeroline: false,
-    ticks: 'outside',
-    anchor: 'free',
-    overlaying: 'y4',
+    // side: 'left',
+    // position: 0
     side: 'right',
-    position: 1
-  }
+    // posiiton: 1
+  },
+  // yaxis6: {
+  //   domain: [0.0, 0.475],
+  //   title: 'FDOM (mg m<sup>-3</sup>)',
+  //   titlefont: {color: '#8c564b'},
+  //   tickfont: {color: '#8c564b'},
+  //   tickcolor: '#8c564b',
+  //   linecolor: '#8c564b',
+  //   showgrid: false,
+  //   showline: true,
+  //   zeroline: false,
+  //   ticks: 'outside',
+  //   anchor: 'x',
+  //   overlaying: 'y4',
+  //   side: 'right'
+  // },
+  // yaxis7: {
+  //   domain: [0.0, 0.475],
+  //   title: 'O<sub>2</sub> (mL/L)', //(mg m<sup>-3</sup>)
+  //   titlefont: {color: '#e377c2'},
+  //   tickfont: {color: '#e377c2'},
+  //   tickcolor: '#e377c2',
+  //   linecolor: '#e377c2',
+  //   showgrid: false,
+  //   showline: true,
+  //   zeroline: false,
+  //   ticks: 'outside',
+  //   anchor: 'free',
+  //   overlaying: 'y4',
+  //   side: 'right',
+  //   position: 1
+  // }
 };
 var pr_layout = {
   // title: 'Most recent profile (nº' + msg_id + ')',
@@ -408,23 +410,24 @@ function setTimeSeriesPlot(callback=null){
         yaxis: 'y5',
         name: 'bbp'
       };
-    var trace6 = {
-        x: ('fdom' in _data ? _data['dt'] : []),
-        y: ('fdom' in _data ? _data['fdom'] : []),
-        type: 'scatter',
-        xaxis: 'x',
-        yaxis: 'y6',
-        name: 'FDOM'
-      };
-    var trace7 = {
-        x: ('o2_c' in _data ? _data['dt'] : []),
-        y: ('o2_c' in _data ? _data['o2_c'] : []),
-        type: 'scatter',
-        xaxis: 'x',
-        yaxis: 'y7',
-        name: 'O2'
-      };
-    var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace_id];
+    // var trace6 = {
+    //     x: ('fdom' in _data ? _data['dt'] : []),
+    //     y: ('fdom' in _data ? _data['fdom'] : []),
+    //     type: 'scatter',
+    //     xaxis: 'x',
+    //     yaxis: 'y6',
+    //     name: 'FDOM'
+    //   };
+    // var trace7 = {
+    //     x: ('o2_c' in _data ? _data['dt'] : []),
+    //     y: ('o2_c' in _data ? _data['o2_c'] : []),
+    //     type: 'scatter',
+    //     xaxis: 'x',
+    //     yaxis: 'y7',
+    //     name: 'O2'
+    //   };
+    // var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace_id];
+    var data = [trace1, trace2, trace3, trace4, trace5, {}, {}, trace_id];
     // Create new plot
     Plotly.newPlot('timeseries', data, ts_layout, options);
     // Set globals for Profile Plot
@@ -460,10 +463,10 @@ function updateTimeSeriesPlot(){
     // fig.data[4].y = ('poc' in _data ? _data['p'] : []);
     fig.data[4].x = ('bbp' in _data ? _data['dt'] : []);
     fig.data[4].y = ('bbp' in _data ? _data['bbp'] : []);
-    fig.data[5].x = ('fdom' in _data ? _data['dt'] : []);
-    fig.data[5].y = ('fdom' in _data ? _data['fdom'] : []);
-    fig.data[6].x = ('o2_c' in _data ? _data['dt'] : []);
-    fig.data[6].y = ('o2_c' in _data ? _data['o2_c'] : []);
+    // fig.data[5].x = ('fdom' in _data ? _data['dt'] : []);
+    // fig.data[5].y = ('fdom' in _data ? _data['fdom'] : []);
+    // fig.data[6].x = ('o2_c' in _data ? _data['dt'] : []);
+    // fig.data[6].y = ('o2_c' in _data ? _data['o2_c'] : []);
     fig.data[7].name = usr_id;
     fig.data[7].x = _data['profile_id'];
     // 3. Redraw Timeseries
