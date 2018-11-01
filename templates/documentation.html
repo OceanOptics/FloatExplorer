@@ -2,28 +2,48 @@
 {% set active_page = "documentation" %}
 {% block title %}{{ lab_id }}{% endblock %}
 {% block body %}
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <main class="col-sm-12">
       <h2>Documentation</h2>
+      <h4>Floats specifications</h4>
+      <p>
+      All floats deployed have are measuring temperature, salinity, oxygen, fluorescence chlorophyll a, backscattering (at 700 nm), fluorescent dissolved ogranic matter (FDOM), and photosynthetically active radiation (PAR). The floats n0572 and n0573 are equipped with a transmissometer (650 nm).
+      n#### are SeaBird Navis floats from the NAAMES project and are operated by the University of Maine.
+      lovbio### and metbio### are NKE PROVOR floats and are operated by the LOV. Most floats are profiling every other day at dawn, thereafter the PAR data is not relevant in most of the cases.
+      <ul>
+        <li>n05## are floats deployed during NAAMES I</li>
+        <li>n06## are floats deployed during NAAMES II</li>
+        <li>n08## are floats deployed during NAAMES III</li>
+      </ul>
+      </p>
+      <h4>Delayed quality check on floats and sensors</h4>
+      <p>
+      <ul>
+        <li>n0646 only did 22 profiles.</li>
+        <li>n0647 only did 167 profiles and started dysfunction during the last profile (data missing at many depth).</li>
+        <li>n0851 PAR sensor is not working (outputs negative values).</li>
+      </ul>
+      </p>
       <h4>Processing</h4>
-      <p>The NAAMES Bio-Argo floats send their profiles to the UMaine server. The data is processed and rendered in near real-time. The different level of data are available on our <a href="{{ config['URL_FTP'] }}">ftp</a> and are described below:
+      <p>Profiles from the NAAMES bioArgo floats are received and processed in real-time at the University of Maine and on the GDAC. The processing described below is available on our <a href="{{ config['URL_FTP'] }}">ftp</a>.
       <ul>
         <li>RAW: all msg and log received from Navis BGCi including incomplete files due to early end of transmission.</li>
         <li>RAW_EOT: only complete msg and log are kept.</li>
-        <li>L0: hexadecimal data stored in msg is decoded in decimal numbers and cnverted to csv files.</li>
-        <li>L1: calibrate level 0 data using manufacturer calibration.</li>
+        <li>L0: hexadecimal data stored in msg is decoded in decimal numbers and converted to csv files.</li>
+      <li>L1: calibrate level 0 data using manufacturer calibration coefficients (available <a href="{{ config['URL_FTP'] }}param/">here</a>).</li>
         <li>L2: adjust and correct the data and compute additional product.
           <ul>
-            <li>fchl is corrected for non-photochemical quenching (Xing et al. 2012)</li>
+            <li>fchl no correction are applied</li>
+            <li>chla_adj is fchl corrected for non-photochemical quenching (Xing et al. 2012) and the manufacturer slope factor is adjusted (chl_HPLC = (fchl_float - 0.019) / 2.32)</li>
             <li>bbp is computed from beta (Zhang et al, 2009, Sullivan et al. 2013)</li>
             <li>POC is computed from bbp </li>
             <li>C_phyto is computed from bbp</li>
           </ul>
         </li>
       </ul>
-      Calibration parameters used are available <a href="{{ config['URL_FTP'] }}param/">here</a>.</p>
-      <p>Table 1. List of parameters.</p>
+      </p>
+      <p><i>Table 1. List of parameters.</i></p>
       <table class="table">
         <!-- <caption>List of parameters measured or products.</caption> -->
         <thead>
@@ -44,6 +64,7 @@
           <tr><td>o2</td><td>oxygen concentration</td><td>mL/L<!-- &mu;mol/kg --></td></tr>
           <tr><td>turb</td><td>turbidity</td><td>NTU</td></tr>
           <tr><td>fchl</td><td>chlorophyll a fluorescence</td><td>mg m<sup>-3</sup></td></tr>
+          <tr><td>chla_adj</td><td>chlorophyll a fluorescence adjusted</td><td>mg m<sup>-3</sup></td></tr>
           <tr><td>beta</td><td>angular scatterance at 700 nm with a scattering angle of 124</td><td>m<sup>-1</sup> sr<sup>-1</sup></td></tr>
           <tr><td>fdom</td><td>fluorescent colored dissolved organic matter (CDOM)</td><td>mg m<sup>-3</sup></td></tr>
           <tr><td>ed###</td><td>downwelling irradiance at ### nm</td><td>W m<sup>-2</sup> nm<sup>-1</sup></td></tr>
