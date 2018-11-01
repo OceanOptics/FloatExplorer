@@ -46,7 +46,8 @@
 <script type="text/javascript">
   $(document).ready(function(){
     setTimeSeriesPlot(setProfilesPlot);
-    setContourPlot(['t', 'chla']);
+    setContourPlot(['t', 'chla_adj']);
+    // setContourPlot(['bbp', 'chla_adj']);
   });
 </script>
 {% if config['ONLINE'] %}

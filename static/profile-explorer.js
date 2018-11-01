@@ -388,7 +388,7 @@ function setTimeSeriesPlot(callback=null){
       };
     var trace4 = {
         x: ('chla' in _data ? _data['dt'] : []),
-        y: ('chla' in _data ? _data['chla'] : []),
+        y: ('chla' in _data ? _data['chla_adj'] : []),
         type: 'scatter',
         xaxis: 'x',
         yaxis: 'y4',
@@ -457,8 +457,8 @@ function updateTimeSeriesPlot(){
     fig.data[1].y = ('t' in _data ? _data['t'] : []);
     fig.data[2].x = ('s' in _data ? _data['dt'] : []);
     fig.data[2].y = ('s' in _data ? _data['s'] : []);
-    fig.data[3].x = ('chla' in _data ? _data['dt'] : []);
-    fig.data[3].y = ('chla' in _data ? _data['chla'] : []);
+    fig.data[3].x = ('chla_adj' in _data ? _data['dt'] : []);
+    fig.data[3].y = ('chla_adj' in _data ? _data['chla_adj'] : []);
     // fig.data[4].x = ('poc' in _data ? _data['poc'] : []);
     // fig.data[4].y = ('poc' in _data ? _data['p'] : []);
     fig.data[4].x = ('bbp' in _data ? _data['dt'] : []);
@@ -503,8 +503,8 @@ function setProfilesPlot(){
         hoverinfo: "x+y"
       };
     var trace4 = {
-        x: ('chla' in _data ? _data['chla'] : []),
-        y: ('chla' in _data ? _data['p'] : []),
+        x: ('chla_adj' in _data ? _data['chla_adj'] : []),
+        y: ('chla_adj' in _data ? _data['p'] : []),
         type: 'scatter',
         xaxis: 'x4',
         name: 'Chlorophyll a',
@@ -583,8 +583,8 @@ function updateProfilesPlot(){
     fig.data[1].y = ('t' in _data ? _data['p'] : []);
     fig.data[2].x = ('s' in _data ? _data['s'] : []);
     fig.data[2].y = ('s' in _data ? _data['p'] : []);
-    fig.data[3].x = ('chla' in _data ? _data['chla'] : []);
-    fig.data[3].y = ('chla' in _data ? _data['p'] : []);
+    fig.data[3].x = ('chla_adj' in _data ? _data['chla_adj'] : []);
+    fig.data[3].y = ('chla_adj' in _data ? _data['p'] : []);
     // fig.data[4].x = ('poc' in _data ? _data['poc'] : []);
     // fig.data[4].y = ('poc' in _data ? _data['p'] : []);
     fig.data[4].x = ('bbp' in _data ? _data['bbp'] : []);
@@ -608,6 +608,9 @@ function setContourPlot(var_ids){
       x: _data['dt'],
       y: _data['p'],
       z: _data['data'],
+      // zauto:false,
+        // zmin:0,
+        // zmax:0.002,
       type: 'contour',
       // Set colorscale (default: Jet)
       colorscale: ('colorscale' in _data ? _data['colorscale'] : 'Jet'),
@@ -631,18 +634,22 @@ function setContourPlot(var_ids){
       x: _data['dt'],
       y: _data['mld'],
       mode: 'lines',
-      line:{color:'rgba(67,67,67,1)'},
+      // line:{color:'rgba(67,67,67,1)'},
+      line:{color:'rgba(255,255,255,1)'},
       hoverinfo: 'y+name',
       color:'black'
     }
 
-    $.getJSON( path2data + usr_id + "." + var_ids[1] + ".contour.json", function( _data ) {  
+    $.getJSON( path2data + usr_id + "." + var_ids[1] + ".contour.json", function( _data ) {
       // Set second trace (if first trace loaded properly)
       var trace2_bg = {
         name: _data['name'],
         x: _data['dt'],
         y: _data['p'],
         z: _data['data'],
+        // zauto:false,
+        // zmin:0,
+        // zmax:4,
         type: 'contour',
         // Set colorscale (default: Jet)
         colorscale: ('colorscale' in _data ? _data['colorscale'] : 'Jet'),
