@@ -387,8 +387,8 @@ function setTimeSeriesPlot(callback=null){
         name: 'Salinity'
       };
     var trace4 = {
-        x: ('chla' in _data ? _data['dt'] : []),
-        y: ('chla' in _data ? _data['chla_adj'] : []),
+        x: ('chla_adj' in _data ? _data['dt'] : []),
+        y: ('chla_adj' in _data ? _data['chla_adj'] : []),
         type: 'scatter',
         xaxis: 'x',
         yaxis: 'y4',
